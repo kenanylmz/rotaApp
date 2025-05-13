@@ -62,6 +62,14 @@ const RegisterScreen = ({navigation}) => {
         .auth()
         .createUserWithEmailAndPassword(email, password);
 
+      // Kullanıcı adını ve soyadını birleştir
+      const displayName = `${firstName} ${lastName}`;
+
+      // Firebase auth profilini güncelle
+      await userCredential.user.updateProfile({
+        displayName: displayName,
+      });
+
       // Firestore'a kullanıcı bilgilerini kaydetme
       await firebase
         .firestore()
@@ -70,8 +78,10 @@ const RegisterScreen = ({navigation}) => {
         .set({
           firstName,
           lastName,
+          displayName,
           email,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
         });
 
       setLoading(false);
@@ -218,18 +228,18 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flexGrow: 1,
-    paddingTop: 20,
+    paddingBottom: 30,
   },
   backButton: {
     position: 'absolute',
     top: 20,
     left: 20,
-    zIndex: 10,
     padding: 10,
+    zIndex: 1,
   },
   logoContainer: {
     alignItems: 'center',
-    marginTop: 50,
+    marginTop: 60,
     marginBottom: 20,
   },
   logo: {
@@ -260,7 +270,7 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderRadius: 8,
     paddingHorizontal: 15,
-    marginBottom: 15,
+    marginBottom: 20,
     backgroundColor: '#f9f9f9',
   },
   icon: {
@@ -276,7 +286,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 15,
+    marginTop: 10,
+    marginBottom: 20,
   },
   buttonText: {
     color: '#fff',
@@ -286,17 +297,17 @@ const styles = StyleSheet.create({
   loginContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 20,
+    marginTop: 10,
   },
   loginText: {
-    fontSize: 16,
-    color: '#333',
+    color: '#666',
+    fontSize: 14,
+    marginRight: 5,
   },
   loginLink: {
-    fontSize: 16,
     color: '#1E90FF',
+    fontSize: 14,
     fontWeight: 'bold',
-    marginLeft: 5,
   },
 });
 

@@ -30,7 +30,19 @@ const LoginScreen = ({navigation}) => {
 
     setLoading(true);
     try {
-      await firebase.auth().signInWithEmailAndPassword(email, password);
+      const userCredential = await firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password);
+
+      // Son giriş zamanını güncelle
+      await firebase
+        .firestore()
+        .collection('users')
+        .doc(userCredential.user.uid)
+        .update({
+          lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+
       setLoading(false);
     } catch (error) {
       setLoading(false);

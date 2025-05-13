@@ -9,14 +9,15 @@ import OnBoardingScreen from '../screens/OnBoardingScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
-import HomeScreen from '../screens/HomeScreen';
+
+// Tab Navigator
+import TabNavigator from './TabNavigator';
 
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState(null);
-  const [isFirstLaunch, setIsFirstLaunch] = useState(true);
 
   // Kullanıcı durumu değişikliğini dinleme
   useEffect(() => {
@@ -49,8 +50,8 @@ const AppNavigator = () => {
             />
           </>
         ) : (
-          // Kullanıcı giriş yapmışsa
-          <Stack.Screen name="Home" component={HomeScreen} />
+          // Kullanıcı giriş yapmışsa Tab Navigator'ı göster
+          <Stack.Screen name="MainApp" component={TabNavigator} />
         )}
       </Stack.Navigator>
     </NavigationContainer>
