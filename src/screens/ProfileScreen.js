@@ -10,6 +10,7 @@ import {
   Alert,
   Modal,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {launchImageLibrary} from 'react-native-image-picker';
@@ -243,7 +244,7 @@ const ProfileScreen = () => {
       <Header title="Profil" />
 
       {!editMode ? (
-        <ScrollView>
+        <ScrollView contentContainerStyle={styles.scrollViewContent}>
           {/* Profil Banner */}
           <View style={styles.profileBanner}>
             <TouchableOpacity
@@ -548,6 +549,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  scrollViewContent: {
+    paddingBottom: Platform.OS === 'ios' ? 120 : 100,
+  },
   // Profil Banner Stili
   profileBanner: {
     backgroundColor: '#1E90FF',
@@ -738,7 +742,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FF3B30',
     margin: 15,
     marginTop: 0,
-    marginBottom: 30,
+    marginBottom: Platform.OS === 'ios' ? 40 : 30,
     padding: 15,
     borderRadius: 12,
     alignItems: 'center',
