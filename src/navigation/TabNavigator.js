@@ -5,9 +5,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 // Screens
 import MapScreen from '../screens/MapScreen';
-import PlaceDetailsScreen from '../screens/PlaceDetailsScreen';
 import ExploreScreen from '../screens/ExploreScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import TripsScreen from '../screens/TripsScreen';
 
 const Tab = createBottomTabNavigator();
 const windowWidth = Dimensions.get('window').width;
@@ -68,16 +68,15 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="YerDetayları"
-        component={PlaceDetailsScreen}
+        name="Anılarım"
+        component={TripsScreen}
         options={{
-          tabBarLabel: 'Yerler',
           tabBarIcon: ({focused, color}) => (
             <TabBarIcon
               focused={focused}
               color={color}
-              iconName="map-marker"
-              label="Yerler"
+              iconName="bookmark"
+              label="Anılarım"
             />
           ),
         }}

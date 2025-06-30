@@ -1,97 +1,188 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# RotaApp 📍
 
-# Getting Started
+**RotaApp**, kullanıcıların gezdiği yerleri harita üzerinde işaretleyebildiği, fotoğraflarla anılar oluşturebildiği ve diğer kullanıcılarla bu anıları paylaşabildiği sosyal bir konum paylaşım uygulamasıdır.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## 🚀 Proje Hakkında
 
-## Step 1: Start Metro
+RotaApp, [React Native](https://reactnative.dev) kullanılarak geliştirilmiş bir mobil uygulamadır. Kullanıcılar uygulama sayesinde:
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+### ✨ Ana Özellikler
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- **🗺️ İnteraktif Harita**: Leaflet maps kullanarak gezdiğiniz yerleri harita üzerinde işaretleyebilirsiniz
+- **📸 Fotoğraf Paylaşımı**: Anılarınızı fotoğraflarla zenginleştirebilirsiniz
+- **🔍 Keşfet**: Diğer kullanıcıların paylaştığı yerleri keşfedebilirsiniz
+- **❤️ Sosyal Özellikler**: Paylaşımları beğenebilir ve yorum yapabilirsiniz
+- **📚 Anılarım**: Kişisel gezilerinizi ve anılarınızı organize edebilirsiniz
+- **👤 Profil Yönetimi**: Kişisel bilgilerinizi ve paylaşımlarınızı yönetebilirsiniz
+- **🔐 Güvenli Giriş**: Firebase Authentication ile güvenli kullanıcı yönetimi
 
-```sh
-# Using npm
+### 🛠️ Kullanılan Teknolojiler
+
+- **Frontend**: React Native 0.78.2
+- **Navigasyon**: React Navigation v7
+- **Backend**: Firebase (Authentication, Firestore)
+- **Harita**: Leaflet Maps (WebView ile entegre)
+- **Yerel Depolama**: AsyncStorage
+- **Fotoğraf**: React Native Image Picker
+- **İkonlar**: React Native Vector Icons
+- **İzinler**: React Native Permissions
+
+## 📋 Gereksinimler
+
+Projeyi çalıştırmadan önce aşağıdaki gereksinimleri karşıladığınızdan emin olun:
+
+- **Node.js**: >= 18.x
+- **React Native CLI**: Kurulu olmalı
+- **Android Studio**: Android geliştirme için
+- **Xcode**: iOS geliştirme için (sadece macOS)
+- **Firebase Projesi**: Aktif bir Firebase projesi
+
+## 🚀 Kurulum
+
+### 1. Depoyu Klonlayın
+
+```bash
+git clone <repository-url>
+cd rotaApp
+```
+
+### 2. Bağımlılıkları Yükleyin
+
+```bash
+# NPM kullanarak
+npm install
+
+# Yarn kullanarak
+yarn install
+```
+
+### 3. iOS Bağımlılıkları (Sadece macOS)
+
+```bash
+# CocoaPods kurulumu
+bundle install
+
+# Pod bağımlılıklarını yükle
+cd ios && bundle exec pod install && cd ..
+```
+
+### 4. Firebase Konfigürasyonu
+
+#### Android için:
+
+1. Firebase Console'dan `google-services.json` dosyasını indirin
+2. `android/app/` klasörüne yerleştirin
+
+#### iOS için:
+
+1. Firebase Console'dan `GoogleService-Info.plist` dosyasını indirin
+2. Xcode'da `ios/rotaApp/` klasörüne ekleyin
+
+### 5. İzinler Konfigürasyonu
+
+#### Android (android/app/src/main/AndroidManifest.xml):
+
+```xml
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+```
+
+#### iOS (ios/rotaApp/Info.plist):
+
+```xml
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>Bu uygulama konumunuzu harita üzerinde göstermek için konum izni gerektirir.</string>
+<key>NSCameraUsageDescription</key>
+<string>Anılarınız için fotoğraf çekmek üzere kamera iznine ihtiyacımız var.</string>
+```
+
+## 🎯 Çalıştırma
+
+### Metro Server'ı Başlatın
+
+```bash
+# NPM
 npm start
 
-# OR using Yarn
+# Yarn
 yarn start
 ```
 
-## Step 2: Build and run your app
+### Android'de Çalıştırma
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
+```bash
+# NPM
 npm run android
 
-# OR using Yarn
+# Yarn
 yarn android
 ```
 
-### iOS
+### iOS'ta Çalıştırma
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
+```bash
+# NPM
 npm run ios
 
-# OR using Yarn
+# Yarn
 yarn ios
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## 📱 Uygulama Yapısı
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+```
+src/
+├── components/         # Yeniden kullanılabilir bileşenler
+├── config/            # Firebase ve diğer yapılandırmalar
+├── navigation/        # Navigasyon yapısı
+├── screens/           # Uygulama ekranları
+│   ├── SplashScreen.js
+│   ├── OnBoardingScreen.js
+│   ├── LoginScreen.js
+│   ├── RegisterScreen.js
+│   ├── MapScreen.js
+│   ├── ExploreScreen.js
+│   ├── TripsScreen.js
+│   └── ProfileScreen.js
+├── styles/            # Stil dosyaları
+├── utils/             # Yardımcı fonksiyonlar
+└── assets/            # Resimler ve statik dosyalar
+```
 
-## Step 3: Modify your app
+## 🔧 Geliştirme
 
-Now that you have successfully run the app, let's make changes!
+### Kod Standartları
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+Proje ESLint ve Prettier kullanmaktadır:
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+```bash
+# Kod kontrolü
+npm run lint
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+# Kod formatı düzeltme
+npx prettier --write .
+```
 
-## Congratulations! :tada:
+### Test
 
-You've successfully run and modified your React Native App. :partying_face:
+```bash
+npm test
+```
 
-### Now what?
+## 🐛 Sorun Giderme
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+### Yaygın Sorunlar
 
-# Troubleshooting
+1. **Metro bundler hatası**: `npx react-native start --reset-cache`
+2. **Android build hatası**: `cd android && ./gradlew clean && cd ..`
+3. **iOS build hatası**: `cd ios && rm -rf Pods && bundle exec pod install && cd ..`
+4. **Firebase bağlantı sorunu**: Konfigürasyon dosyalarının doğru konumda olduğundan emin olun
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+### İzin Sorunları
 
-# Learn More
+Eğer konum veya kamera izinleri çalışmıyorsa:
 
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+- Cihaz ayarlarından uygulamaya manuel izin verin
+- Uygulamayı yeniden başlatın

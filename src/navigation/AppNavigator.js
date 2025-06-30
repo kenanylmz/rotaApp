@@ -9,6 +9,7 @@ import OnBoardingScreen from '../screens/OnBoardingScreen';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
+import PlaceDetailsScreen from '../screens/PlaceDetailsScreen';
 
 // Tab Navigator
 import TabNavigator from './TabNavigator';
@@ -51,7 +52,10 @@ const AppNavigator = () => {
           </>
         ) : (
           // Kullanıcı giriş yapmışsa Tab Navigator'ı göster
-          <Stack.Screen name="MainApp" component={TabNavigator} />
+          <>
+            <Stack.Screen name="MainApp" component={TabNavigator} />
+            <Stack.Screen name="YerDetayları" component={PlaceDetailsScreen} />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>

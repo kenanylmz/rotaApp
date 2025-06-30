@@ -33,6 +33,7 @@ const ProfileScreen = () => {
   const [securePasswordEntry, setSecurePasswordEntry] = useState(true);
   const [secureConfirmEntry, setSecureConfirmEntry] = useState(true);
   const [lastLogin, setLastLogin] = useState(null);
+  const [totalMarkers, setTotalMarkers] = useState(0);
 
   // Kullanıcı bilgilerini ve profil fotoğrafını yükle
   useEffect(() => {
@@ -62,10 +63,30 @@ const ProfileScreen = () => {
           console.error('Kullanıcı bilgileri alınamadı:', error);
         });
 
+      // Kullanıcının toplam marker sayısını al
+      fetchTotalMarkers(currentUser.uid);
+
       // AsyncStorage'dan profil fotoğrafını yükle
       loadProfileImage();
     }
   }, []);
+
+  // Kullanıcının toplam marker sayısını al
+  const fetchTotalMarkers = async userId => {
+    try {
+      const markersSnapshot = await firebase
+        .firestore()
+        .collection('users')
+        .doc(userId)
+        .collection('markers')
+        .get();
+
+      setTotalMarkers(markersSnapshot.size);
+    } catch (error) {
+      console.error('Marker sayısı alınamadı:', error);
+      setTotalMarkers(0);
+    }
+  };
 
   // Profil fotoğrafını AsyncStorage'dan yükle
   const loadProfileImage = async () => {
@@ -114,6 +135,12 @@ const ProfileScreen = () => {
     try {
       await AsyncStorage.setItem(
         `profileImage_${firebase.auth().currentUser.uid}`,
+        imageUri,
+      );
+
+      // Kullanıcı profili için fotoğrafı kaydet
+      await AsyncStorage.setItem(
+        `user_profile_${firebase.auth().currentUser.uid}`,
         imageUri,
       );
     } catch (error) {
@@ -297,24 +324,14 @@ const ProfileScreen = () => {
             </View>
           </View>
 
-          {/* İstatistikler */}
+          {/* İstatistikler - Güncellenmiş Versiyon */}
           <View style={styles.statsContainer}>
             <Text style={styles.sectionTitle}>İstatistikler</Text>
-            <View style={styles.statsRow}>
-              <View style={styles.statItem}>
-                <Icon name="map" size={24} color="#1E90FF" />
-                <Text style={styles.statValue}>0</Text>
-                <Text style={styles.statLabel}>Toplam Gezi</Text>
-              </View>
-              <View style={styles.statItem}>
-                <Icon name="heart" size={24} color="#FF3B5C" />
-                <Text style={styles.statValue}>0</Text>
-                <Text style={styles.statLabel}>Favori Yerler</Text>
-              </View>
-              <View style={styles.statItem}>
-                <Icon name="star" size={24} color="#FFD700" />
-                <Text style={styles.statValue}>0</Text>
-                <Text style={styles.statLabel}>Değerlendirme</Text>
+            <View style={styles.singleStatContainer}>
+              <Icon name="map-marker" size={30} color="#1E90FF" />
+              <View style={styles.singleStatContent}>
+                <Text style={styles.singleStatValue}>{totalMarkers}</Text>
+                <Text style={styles.singleStatLabel}>Toplam Gezi</Text>
               </View>
             </View>
           </View>
@@ -359,23 +376,6 @@ const ProfileScreen = () => {
                 {formatLastLogin() || 'Bilinmiyor'}
               </Text>
             </View>
-          </View>
-
-          {/* Popüler Yerleriniz */}
-          <View style={styles.popularPlacesContainer}>
-            <View style={styles.sectionHeader}>
-              <Text style={styles.sectionTitle}>Popüler Yerleriniz</Text>
-              <TouchableOpacity>
-                <Text style={styles.seeAllButton}>
-                  Tümünü Gör{' '}
-                  <Icon name="angle-right" size={14} color="#1E90FF" />
-                </Text>
-              </TouchableOpacity>
-            </View>
-
-            <Text style={styles.noPlacesText}>
-              Henüz ziyaret ettiğiniz bir yer bulunmamaktadır.
-            </Text>
           </View>
 
           {/* Çıkış Yap */}
@@ -633,7 +633,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 
-  // İstatistikler Stili
+  // İstatistikler Stili - Güncellenmiş Versiyon
   statsContainer: {
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
@@ -652,22 +652,22 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom: 15,
   },
-  statsRow: {
+  singleStatContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  statItem: {
-    flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
   },
-  statValue: {
-    fontSize: 24,
+  singleStatContent: {
+    marginLeft: 15,
+  },
+  singleStatValue: {
+    fontSize: 28,
     fontWeight: 'bold',
     color: '#333',
-    marginVertical: 5,
   },
-  statLabel: {
-    fontSize: 14,
+  singleStatLabel: {
+    fontSize: 16,
     color: '#666',
   },
 
@@ -702,39 +702,6 @@ const styles = StyleSheet.create({
   accountValue: {
     fontSize: 16,
     color: '#666',
-  },
-
-  // Popüler Yerler Stili
-  popularPlacesContainer: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    margin: 15,
-    marginTop: 0,
-    padding: 15,
-    paddingBottom: 20,
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOffset: {width: 0, height: 1},
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  seeAllButton: {
-    color: '#1E90FF',
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  noPlacesText: {
-    fontSize: 14,
-    color: '#666',
-    fontStyle: 'italic',
-    textAlign: 'center',
-    paddingVertical: 20,
   },
 
   // Çıkış Yap Butonu
